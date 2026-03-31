@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sudoku Meta-Learning Playground</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Layer 1 evolves Layer 2</p>
+          <h1>Sudoku, learned from a single bit of truth.</h1>
+          <p class="lede">
+            Every life starts from scratch. Layer 2 sees only the puzzle and gets one final signal:
+            solved or not solved. Layer 1 keeps mutating the architecture so the next life can learn faster.
+          </p>
+        </div>
+        <div class="status-card">
+          <div class="status-label">Meta Status</div>
+          <div id="running-badge" class="running-badge">Booting</div>
+          <div class="metric-grid">
+            <article>
+              <span>Generation</span>
+              <strong id="generation">0</strong>
+            </article>
+            <article>
+              <span>Best Gen</span>
+              <strong id="best-generation">-</strong>
+            </article>
+            <article>
+              <span>Lives Kept</span>
+              <strong id="life-count">0</strong>
+            </article>
+            <article>
+              <span>Clock</span>
+              <strong id="clock">0s</strong>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="boards">
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Puzzle</h2>
+            <span id="puzzle-clues">Clues: -</span>
+          </div>
+          <div id="puzzle-board" class="board"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Layer 2 Output</h2>
+            <span id="best-reward">Reward: 0</span>
+          </div>
+          <div id="solution-board" class="board"></div>
+        </article>
+      </section>
+
+      <section class="columns">
+        <article class="panel architecture">
+          <div class="panel-head">
+            <h2>Current Architecture</h2>
+            <span id="success-rate">Success rate: 0%</span>
+          </div>
+          <dl id="architecture-list" class="architecture-list"></dl>
+        </article>
+        <article class="panel trace">
+          <div class="panel-head">
+            <h2>Lifetime Trace</h2>
+            <span id="lifetime-steps">0 steps</span>
+          </div>
+          <div id="trace-list" class="trace-list"></div>
+        </article>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+  </html>
