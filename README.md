@@ -102,6 +102,8 @@ RL² and the main text of the ES paper were read. The rest were checked at abstr
 - **In-context RL:** Algorithm Distillation (2210.14215), Decision-Pretrained Transformer (2306.14892).
 - **Sudoku, learned with supervision:** Recurrent Relational Networks (1711.08028), SATNet (1905.12149), Hierarchical Reasoning Model (2506.21734).
 
+**Ilya Sutskever's papers.** He co-authored both papers this plan is built on. RL² trains with gradients and ES uses no backprop. Neither paper tested them together, so combining them is this repo's choice. Also checked at abstract level and not used here: Let's Verify Step by Step (2305.20050), Formal Mathematics Statement Curriculum Learning (2202.01344) and Weak-to-Strong Generalization (2312.09390).
+
 A brief search found no work combining ES, RL² and Sudoku. That search was not thorough, so this repo makes no novelty claim.
 
 ## History
