@@ -44,7 +44,7 @@ Standard ES: mirrored noise, rank-transformed returns, weight decay. Start with 
 
 From [Salimans et al., 2017](https://arxiv.org/abs/1703.03864):
 
-- ES needed 3x to 10x as much data as TRPO in most MuJoCo comparisons.
+- ES used 3x to 10x as much data as A3C on most Atari games, and up to 10x as much as TRPO on MuJoCo.
 - The noise must actually change behaviour, or every copy scores the same and there is nothing to select.
 - Its networks were feed-forward as far as I read, so ES on a GRU is untested by that paper. Stage 0 checks it.
 
