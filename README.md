@@ -2,7 +2,7 @@
 
 Can a neural network work out a hidden Sudoku rule while its weights stay frozen, and be trained with no gradient descent at all?
 
-**Status: plan only. No network has been trained yet.** The world numbers below come from small simulations of ideal agents (about 60 trials per row, so roughly +/-5 points). Compute figures are estimates.
+**Status: plan only. No network has been trained yet.** The world numbers below come from small simulations of scripted agents (1000 trials per setting). Compute figures are estimates.
 
 ## The idea
 
@@ -18,11 +18,13 @@ Standard Sudoku rules never change, so the slow loop would bake them in and the 
 
 | Finding | What it changes |
 |---|---|
-| With a mixed list of named rules (diagonals, corners, anti-knight and so on), an ideal agent already scores about 97% on the first puzzle. Nothing is left to learn across puzzles | Use one family of rules instead: **no same digit at a hidden offset (dr, dc)**. All 18 offsets tested have valid 6x6 grids |
-| With that family, an ideal agent scores about 80% on puzzle 1 and 95-100% from puzzle 2 on, at 14-18 clues | There is about 15-20 points of signal for memory, and most of it arrives by puzzle 3. Trials can be short |
-| Many puzzles don't need the rule at all: about 38% at 14 clues, 79% at 18, 96% at 22 | Only keep puzzles where the hidden rule removes at least one solution that the base rules allow |
+| With a mixed list of named rules (diagonals, corners, anti-knight and so on), memory is worth only about 6 points to an ideal agent at 14 clues. It already scores about 91% with no memory | Use one family of rules instead: **no same digit at a hidden offset (dr, dc)**. All 18 offsets tested have valid 6x6 grids |
+| With that family at 14 clues, an ideal agent that forgets between puzzles scores about 78%. One that remembers scores 79% on puzzle 1, 95% on puzzle 2 and 98-100% after that | Memory is worth about 20 points to an ideal agent, and most of it arrives by puzzle 3. Trials can be short |
+| Many puzzles don't need the rule at all: about 12% at 12 clues, 37% at 14, 80% at 18 | Only keep puzzles where the hidden rule removes at least one solution that the base rules allow |
 
-Without knowing the rule, an ideal solver scores about 50-55% on the kept puzzles.
+Without knowing the rule, an ideal solver scores about 46% on the kept puzzles at 14 clues.
+
+**Open problem, to fix before any training.** The ideal agents above search every possible solution. An agent that only checks whether the next move is legal gets **no gain from memory**: at 14 clues it scores about 55% with memory, about 55% without, and 53% even when told the rule. Its failures are dead ends that need lookahead, which a small GRU is unlikely to do. Options to test: restrict the mask to digits that appear in some valid completion, or score conflicts instead of finished grids.
 
 ## Setup
 
@@ -36,7 +38,7 @@ Without knowing the rule, an ideal solver scores about 50-55% on the kept puzzle
 | Reward | +0.1 per safe placement, -0.1 if it breaks the hidden rule (ends the puzzle), +1 for a finished grid |
 | Network | GRU with about 64 units |
 
-The mask and cursor are deliberate. A small flat GRU probably can't do Sudoku deduction on its own, and a failure there would say nothing about adaptation. This leaves one job: infer the hidden offset.
+The mask and cursor are deliberate. A small flat GRU probably can't do Sudoku deduction on its own, and a failure there would say nothing about adaptation. They are not enough yet (see the open problem above).
 
 ## Training
 
@@ -75,6 +77,7 @@ Stop at the first gate that fails.
 
 | Stage | Task | Where | Gate |
 |---|---|---|---|
+| W | Change the world, with scripted agents and no network | Laptop | A one-step agent gains at least 5 points from memory |
 | 0 | 10-armed bandit, ES on the GRU | Laptop | Roughly matches UCB |
 | 1 | 4x4, fixed rules, ES | Laptop | Solves above 90% |
 | 2 | 6x6, 3 hidden offsets | Kaggle T4 | Beats the reset control |
